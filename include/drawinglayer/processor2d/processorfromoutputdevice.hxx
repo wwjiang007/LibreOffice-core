@@ -25,20 +25,17 @@
 
 class OutputDevice;
 
-namespace drawinglayer::processor2d {
-    class BaseProcessor2D;
-}
-
-namespace drawinglayer::geometry { class ViewInformation2D; }
+namespace drawinglayer::processor2d { class BaseProcessor2D; }
+namespace drawinglayer::primitive2d { class VisitorParameters; }
 
 namespace drawinglayer::processor2d
-    {
-        // create a mating VCL-Processor for given OutputDevice. This includes
-        // looking for MetaFile-recording. The returned renderer changes owner,
-        // deletion is duty of the caller
-        DRAWINGLAYER_DLLPUBLIC std::unique_ptr<drawinglayer::processor2d::BaseProcessor2D> createBaseProcessor2DFromOutputDevice(
-            OutputDevice& rTargetOutDev,
-            const drawinglayer::geometry::ViewInformation2D& rViewInformation2D);
+{
+    // create a mating VCL-Processor for given OutputDevice. This includes
+    // looking for MetaFile-recording. The returned renderer changes owner,
+    // deletion is duty of the caller
+    DRAWINGLAYER_DLLPUBLIC std::unique_ptr<drawinglayer::processor2d::BaseProcessor2D> createBaseProcessor2DFromOutputDevice(
+        OutputDevice& rTargetOutDev,
+        drawinglayer::primitive2d::VisitorParameters const& rParameters);
 
 } // end of namespace drawinglayer::processor2d
 

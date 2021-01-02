@@ -37,11 +37,11 @@
 
 namespace drawinglayer::processor2d
 {
-        HitTestProcessor2D::HitTestProcessor2D(const geometry::ViewInformation2D& rViewInformation,
+        HitTestProcessor2D::HitTestProcessor2D(primitive2d::VisitorParameters const& rVisitorParameters,
             const basegfx::B2DPoint& rLogicHitPosition,
             double fLogicHitTolerance,
             bool bHitTextOnly)
-        :   BaseProcessor2D(rViewInformation),
+        :   BaseProcessor2D(rVisitorParameters),
             maDiscreteHitPosition(),
             mfDiscreteHitTolerance(0.0),
             maHitStack(),
@@ -230,7 +230,7 @@ namespace drawinglayer::processor2d
                 {
                     // remember current ViewInformation2D
                     const primitive2d::TransformPrimitive2D& rTransformCandidate(static_cast< const primitive2d::TransformPrimitive2D& >(rCandidate));
-                    const geometry::ViewInformation2D aLastViewInformation2D(getViewInformation2D());
+                    primitive2d::VisitorParameters aLastVisitorParameters(maVisitorParameters);
 
                     // create new local ViewInformation2D containing transformation
                     const geometry::ViewInformation2D aViewInformation2D(
@@ -239,13 +239,14 @@ namespace drawinglayer::processor2d
                         getViewInformation2D().getViewport(),
                         getViewInformation2D().getVisualizedPage(),
                         getViewInformation2D().getViewTime());
-                    updateViewInformation(aViewInformation2D);
+                    primitive2d::VisitorParameters aVisitorParameters(aViewInformation2D);
+                    updateVisitorParameters(aVisitorParameters);
 
                     // process child content recursively
                     process(rTransformCandidate.getChildren());
 
                     // restore transformations
-                    updateViewInformation(aLastViewInformation2D);
+                    updateVisitorParameters(aLastVisitorParameters);
 
                     break;
                 }
@@ -410,7 +411,7 @@ namespace drawinglayer::processor2d
                 case PRIMITIVE2D_ID_TEXTDECORATEDPORTIONPRIMITIVE2D :
                 {
                     // for text use the BoundRect of the primitive itself
-                    const basegfx::B2DRange aRange(rCandidate.getB2DRange(getViewInformation2D()));
+                    const basegfx::B2DRange aRange(rCandidate.getB2DRange(maVisitorParameters));
 
                     if(!aRange.isEmpty())
                     {
@@ -427,7 +428,7 @@ namespace drawinglayer::processor2d
                         // The recently added BitmapEx::GetTransparency() makes it easy to extend
                         // the BitmapPrimitive2D HitTest to take the contained BitmapEx and it's
                         // transparency into account
-                        const basegfx::B2DRange aRange(rCandidate.getB2DRange(getViewInformation2D()));
+                        const basegfx::B2DRange aRange(rCandidate.getB2DRange(maVisitorParameters));
 
                         if(!aRange.isEmpty())
                         {
@@ -481,7 +482,7 @@ namespace drawinglayer::processor2d
                         // This may be refined in the future, e.g:
                         // - For Bitmaps, the mask and/or transparence information may be used
                         // - For MetaFiles, the MetaFile content may be used
-                        const basegfx::B2DRange aRange(rCandidate.getB2DRange(getViewInformation2D()));
+                        const basegfx::B2DRange aRange(rCandidate.getB2DRange(maVisitorParameters));
 
                         if(!aRange.isEmpty())
                         {

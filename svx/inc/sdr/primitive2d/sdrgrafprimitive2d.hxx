@@ -35,9 +35,8 @@ private:
     GraphicAttr maGraphicAttr;
 
     // local decomposition.
-    virtual void
-    create2DDecomposition(Primitive2DContainer& rContainer,
-                          const geometry::ViewInformation2D& aViewInformation) const override;
+    virtual void create2DDecomposition(Primitive2DContainer& rContainer,
+                                       VisitorParameters const& rParameters) const override;
 
 public:
     SdrGrafPrimitive2D(const ::basegfx::B2DHomMatrix& rTransform,

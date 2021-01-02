@@ -48,38 +48,40 @@ namespace
 class B2DRangeVisitor : public Primitive2DDecompositionVisitor
 {
 public:
-    const geometry::ViewInformation2D& mrViewInformation;
+    VisitorParameters const& mrParameters;
     basegfx::B2DRange maRetval;
-    B2DRangeVisitor(const geometry::ViewInformation2D& rViewInformation)
-        : mrViewInformation(rViewInformation)
+
+    B2DRangeVisitor(VisitorParameters const& rParameters)
+        : mrParameters(rParameters)
     {
     }
-    virtual void append(const Primitive2DReference& r) override
+
+    virtual void append(const Primitive2DReference& rReference) override
     {
-        maRetval.expand(getB2DRangeFromPrimitive2DReference(r, mrViewInformation));
+        maRetval.expand(getB2DRangeFromPrimitive2DReference(rReference, mrParameters));
     }
-    virtual void append(const Primitive2DContainer& r) override
+
+    virtual void append(const Primitive2DContainer& rReference) override
     {
-        maRetval.expand(r.getB2DRange(mrViewInformation));
+        maRetval.expand(rReference.getB2DRange(mrParameters));
     }
-    virtual void append(Primitive2DContainer&& r) override
+
+    virtual void append(Primitive2DContainer&& rReference) override
     {
-        maRetval.expand(r.getB2DRange(mrViewInformation));
+        maRetval.expand(rReference.getB2DRange(mrParameters));
     }
 };
 }
 
-basegfx::B2DRange
-BasePrimitive2D::getB2DRange(const geometry::ViewInformation2D& rViewInformation) const
+basegfx::B2DRange BasePrimitive2D::getB2DRange(VisitorParameters const& rParameters) const
 {
-    B2DRangeVisitor aVisitor(rViewInformation);
-    get2DDecomposition(aVisitor, rViewInformation);
+    B2DRangeVisitor aVisitor(rParameters);
+    get2DDecomposition(aVisitor, rParameters);
     return aVisitor.maRetval;
 }
 
-void BasePrimitive2D::get2DDecomposition(
-    Primitive2DDecompositionVisitor& /*rVisitor*/,
-    const geometry::ViewInformation2D& /*rViewInformation*/) const
+void BasePrimitive2D::get2DDecomposition(Primitive2DDecompositionVisitor& /*rVisitor*/,
+                                         VisitorParameters const& /*rParameters*/) const
 {
 }
 
@@ -88,7 +90,8 @@ BasePrimitive2D::getDecomposition(const uno::Sequence<beans::PropertyValue>& rVi
 {
     const auto aViewInformation = geometry::createViewInformation2D(rViewParameters);
     Primitive2DContainer aContainer;
-    get2DDecomposition(aContainer, aViewInformation);
+    VisitorParameters aParameters(aViewInformation);
+    get2DDecomposition(aContainer, aParameters);
     return comphelper::containerToSequence(aContainer);
 }
 
@@ -96,7 +99,8 @@ css::geometry::RealRectangle2D SAL_CALL
 BasePrimitive2D::getRange(const uno::Sequence<beans::PropertyValue>& rViewParameters)
 {
     const auto aViewInformation = geometry::createViewInformation2D(rViewParameters);
-    return basegfx::unotools::rectangle2DFromB2DRectangle(getB2DRange(aViewInformation));
+    VisitorParameters aParameters(aViewInformation);
+    return basegfx::unotools::rectangle2DFromB2DRectangle(getB2DRange(aParameters));
 }
 
 sal_Int64 SAL_CALL BasePrimitive2D::estimateUsage()

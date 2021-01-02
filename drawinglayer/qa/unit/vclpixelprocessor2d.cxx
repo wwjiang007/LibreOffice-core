@@ -51,9 +51,8 @@ public:
         device->SetBackground(Wallpaper(COL_RED));
         device->Erase();
 
-        drawinglayer::geometry::ViewInformation2D view;
-        std::unique_ptr<processor2d::BaseProcessor2D> processor(
-            processor2d::createBaseProcessor2DFromOutputDevice(*device, view));
+        drawinglayer::primitive2d::VisitorParameters aParameters;
+        auto processor = processor2d::createBaseProcessor2DFromOutputDevice(*device, aParameters);
         CPPUNIT_ASSERT(processor);
 
         basegfx::B2DRange definitionRange(0, 0, 100, 200);

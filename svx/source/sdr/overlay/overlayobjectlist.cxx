@@ -77,8 +77,9 @@ namespace sdr::overlay
                     }
 
                     const drawinglayer::geometry::ViewInformation2D& aViewInformation2D(pManager->getCurrentViewInformation2D());
+                    const drawinglayer::primitive2d::VisitorParameters aVisitorParameters(aViewInformation2D);
                     drawinglayer::processor2d::HitTestProcessor2D aHitTestProcessor2D(
-                        aViewInformation2D,
+                        aVisitorParameters,
                         rLogicPosition,
                         fLogicTolerance,
                         false);

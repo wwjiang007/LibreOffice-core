@@ -382,9 +382,9 @@ void ViewObjectContactOfPageHierarchy::getPrimitive2DSequenceHierarchy(DisplayIn
         return;
 
     // get ranges
-    const drawinglayer::geometry::ViewInformation2D& rViewInformation2D(GetObjectContact().getViewInformation2D());
-    const basegfx::B2DRange aObjectRange(xRetval.getB2DRange(rViewInformation2D));
-    const basegfx::B2DRange& aViewRange(rViewInformation2D.getViewport());
+    drawinglayer::primitive2d::VisitorParameters aParameters(GetObjectContact().getViewInformation2D());
+    const basegfx::B2DRange aObjectRange(xRetval.getB2DRange(aParameters));
+    const basegfx::B2DRange& aViewRange = aParameters.getViewInformation().getViewport();
 
     // check geometrical visibility
     if(!aViewRange.isEmpty() && !aViewRange.overlaps(aObjectRange))
@@ -602,9 +602,9 @@ void ViewObjectContactOfSdrPage::getPrimitive2DSequenceHierarchy(DisplayInfo& rD
     if(!xRetval.empty())
     {
         // get ranges
-        const drawinglayer::geometry::ViewInformation2D& rViewInformation2D(GetObjectContact().getViewInformation2D());
-        const basegfx::B2DRange aObjectRange(xRetval.getB2DRange(rViewInformation2D));
-        const basegfx::B2DRange& aViewRange(rViewInformation2D.getViewport());
+        drawinglayer::primitive2d::VisitorParameters aParameters(GetObjectContact().getViewInformation2D());
+        const basegfx::B2DRange aObjectRange(xRetval.getB2DRange(aParameters));
+        const basegfx::B2DRange& aViewRange(aParameters.getViewInformation().getViewport());
 
         // check geometrical visibility
         if(!aViewRange.isEmpty() && !aViewRange.overlaps(aObjectRange))

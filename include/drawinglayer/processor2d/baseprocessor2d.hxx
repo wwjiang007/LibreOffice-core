@@ -153,18 +153,16 @@ namespace drawinglayer::processor2d
          */
         class DRAWINGLAYER_DLLPUBLIC BaseProcessor2D : public  drawinglayer::primitive2d::Primitive2DDecompositionVisitor
         {
-        private:
-            /// The ViewInformation2D itself. It's private to isolate accesses to it
-            geometry::ViewInformation2D                     maViewInformation2D;
-
         protected:
+            primitive2d::VisitorParameters maVisitorParameters;
+
             /*  access method to allow the implementations to change the current
                 ViewInformation2D if needed. This allows isolating these accesses
                 later if needed
              */
-            void updateViewInformation(const geometry::ViewInformation2D& rViewInformation2D)
+            void updateVisitorParameters(primitive2d::VisitorParameters const & rVisitorParameters)
             {
-                maViewInformation2D = rViewInformation2D;
+                maVisitorParameters = rVisitorParameters;
             }
 
             /*  as tooling, the process() implementation takes over API handling and calls this
@@ -182,14 +180,17 @@ namespace drawinglayer::processor2d
 
         public:
             /// constructor/destructor
-            explicit BaseProcessor2D(const geometry::ViewInformation2D& rViewInformation);
+            explicit BaseProcessor2D(primitive2d::VisitorParameters const & rVisitorParameters);
             virtual ~BaseProcessor2D();
 
             /// the central processing method
             void process(const primitive2d::Primitive2DContainer& rSource);
 
             /// data read access
-            const geometry::ViewInformation2D& getViewInformation2D() const { return maViewInformation2D; }
+            const geometry::ViewInformation2D& getViewInformation2D() const
+            {
+                return maVisitorParameters.getViewInformation();
+            }
         };
 
 } // end of namespace drawinglayer::processor2d

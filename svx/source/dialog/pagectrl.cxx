@@ -360,8 +360,10 @@ void SvxPageWindow::drawFillAttributes(vcl::RenderContext& rRenderContext,
     const drawinglayer::geometry::ViewInformation2D aViewInformation2D(
                     basegfx::B2DHomMatrix(), rRenderContext.GetViewTransformation(), aPaintRange, nullptr, 0.0);
 
+    const drawinglayer::primitive2d::VisitorParameters aVisitorParameters(aViewInformation2D);
+
     std::unique_ptr<drawinglayer::processor2d::BaseProcessor2D> pProcessor(
-        drawinglayer::processor2d::createProcessor2DFromOutputDevice(rRenderContext, aViewInformation2D));
+        drawinglayer::processor2d::createProcessor2DFromOutputDevice(rRenderContext, aVisitorParameters));
     pProcessor->process(aSequence);
 }
 

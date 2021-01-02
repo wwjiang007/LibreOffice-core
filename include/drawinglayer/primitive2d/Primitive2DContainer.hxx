@@ -27,14 +27,13 @@
 #include <basegfx/range/b2drange.hxx>
 #include <deque>
 
-namespace drawinglayer::geometry
+namespace drawinglayer::primitive2d
 {
-class ViewInformation2D;
+class VisitorParameters;
 }
 
 namespace drawinglayer::primitive2d
 {
-
 class SAL_WARN_UNUSED DRAWINGLAYERCORE_DLLPUBLIC Primitive2DContainer final
     : public std::deque<Primitive2DReference>,
       public Primitive2DDecompositionVisitor
@@ -88,7 +87,7 @@ public:
     }
     bool operator==(const Primitive2DContainer& rB) const;
     bool operator!=(const Primitive2DContainer& rB) const { return !operator==(rB); }
-    basegfx::B2DRange getB2DRange(const geometry::ViewInformation2D& aViewInformation) const;
+    basegfx::B2DRange getB2DRange(VisitorParameters const& rParameters) const;
     Primitive2DContainer maybeInvert(bool bInvert = false) const;
 };
 

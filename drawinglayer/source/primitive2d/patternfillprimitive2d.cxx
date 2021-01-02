@@ -93,24 +93,26 @@ namespace drawinglayer::primitive2d
             }
         }
 
-        Primitive2DContainer PatternFillPrimitive2D::createContent(const geometry::ViewInformation2D& rViewInformation) const
+        Primitive2DContainer PatternFillPrimitive2D::createContent(VisitorParameters const & rParameters) const
         {
             Primitive2DContainer aContent;
 
             // see if buffering is wanted. If so, create buffered content in given resolution
             if(0 != mnDiscreteWidth && 0 != mnDiscreteHeight)
             {
-                const geometry::ViewInformation2D aViewInformation2D;
                 const primitive2d::Primitive2DReference xEmbedRef(
                     new primitive2d::TransformPrimitive2D(
                         basegfx::utils::createScaleB2DHomMatrix(mnDiscreteWidth, mnDiscreteHeight),
                         getChildren()));
                 const primitive2d::Primitive2DContainer xEmbedSeq { xEmbedRef };
 
+                const geometry::ViewInformation2D aViewInformation2D;
+                primitive2d::VisitorParameters aVisitorParameters(aViewInformation2D);
+
                 const BitmapEx aBitmapEx(
                     convertToBitmapEx(
                         xEmbedSeq,
-                        aViewInformation2D,
+                        aVisitorParameters,
                         mnDiscreteWidth,
                         mnDiscreteHeight,
                         mnDiscreteWidth * mnDiscreteHeight));
@@ -142,7 +144,7 @@ namespace drawinglayer::primitive2d
 
                 // check if content needs to be clipped
                 const basegfx::B2DRange aUnitRange(0.0, 0.0, 1.0, 1.0);
-                const basegfx::B2DRange aContentRange(getChildren().getB2DRange(rViewInformation));
+                const basegfx::B2DRange aContentRange(getChildren().getB2DRange(rParameters));
 
                 if(!aUnitRange.isInside(aContentRange))
                 {
@@ -158,7 +160,7 @@ namespace drawinglayer::primitive2d
             return aContent;
         }
 
-        void PatternFillPrimitive2D::create2DDecomposition(Primitive2DContainer& rContainer, const geometry::ViewInformation2D& rViewInformation) const
+        void PatternFillPrimitive2D::create2DDecomposition(Primitive2DContainer& rContainer, VisitorParameters const & rParameters) const
         {
             Primitive2DContainer aRetval;
 
@@ -180,7 +182,7 @@ namespace drawinglayer::primitive2d
             aTiling.appendTransformations(aMatrices);
 
             // create content
-            const Primitive2DContainer aContent(createContent(rViewInformation));
+            const Primitive2DContainer aContent(createContent(rParameters));
 
             // resize result
             aRetval.resize(aMatrices.size());
@@ -244,12 +246,12 @@ namespace drawinglayer::primitive2d
             return false;
         }
 
-        basegfx::B2DRange PatternFillPrimitive2D::getB2DRange(const geometry::ViewInformation2D& /* rViewInformation */ ) const
+        basegfx::B2DRange PatternFillPrimitive2D::getB2DRange(VisitorParameters const & /*rParameters*/) const
         {
             return getMask().getB2DRange();
         }
 
-        void PatternFillPrimitive2D::get2DDecomposition(Primitive2DDecompositionVisitor& rVisitor, const geometry::ViewInformation2D& rViewInformation) const
+        void PatternFillPrimitive2D::get2DDecomposition(Primitive2DDecompositionVisitor& rVisitor, VisitorParameters const & rParameters) const
         {
             // The existing buffered decomposition uses a buffer in the remembered
             // size or none if sizes are zero. Get new needed sizes which depend on
@@ -257,7 +259,7 @@ namespace drawinglayer::primitive2d
             bool bResetBuffering = false;
             sal_uInt32 nW(0);
             sal_uInt32 nH(0);
-            calculateNeededDiscreteBufferSize(nW, nH, rViewInformation);
+            calculateNeededDiscreteBufferSize(nW, nH, rParameters.getViewInformation());
             const bool bBufferingCurrentlyUsed(0 != mnDiscreteWidth && 0 != mnDiscreteHeight);
             const bool bBufferingNextUsed(0 != nW && 0 != nH);
 
@@ -305,7 +307,7 @@ namespace drawinglayer::primitive2d
             }
 
             // call parent
-            BufferedDecompositionPrimitive2D::get2DDecomposition(rVisitor, rViewInformation);
+            BufferedDecompositionPrimitive2D::get2DDecomposition(rVisitor, rParameters);
         }
 
         sal_Int64 SAL_CALL PatternFillPrimitive2D::estimateUsage()

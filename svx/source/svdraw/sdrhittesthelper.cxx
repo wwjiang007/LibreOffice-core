@@ -142,8 +142,10 @@ bool ViewObjectContactPrimitiveHit(
             {
                 // create a HitTest processor
                 const drawinglayer::geometry::ViewInformation2D& rViewInformation2D = rVOC.GetObjectContact().getViewInformation2D();
+                const drawinglayer::primitive2d::VisitorParameters aVisitorParameters(rViewInformation2D);
+
                 drawinglayer::processor2d::HitTestProcessor2D aHitTestProcessor2D(
-                    rViewInformation2D,
+                    aVisitorParameters,
                     rHitPosition,
                     fLogicHitTolerance,
                     bTextOnly);

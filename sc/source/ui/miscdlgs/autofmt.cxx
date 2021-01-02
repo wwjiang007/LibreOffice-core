@@ -400,10 +400,9 @@ void ScAutoFmtPreview::PaintCells(vcl::RenderContext& rRenderContext)
         return;
 
     const drawinglayer::geometry::ViewInformation2D aNewViewInformation2D;
-    std::unique_ptr<drawinglayer::processor2d::BaseProcessor2D> pProcessor2D(
-        drawinglayer::processor2d::createPixelProcessor2DFromOutputDevice(
-            rRenderContext,
-            aNewViewInformation2D));
+    const drawinglayer::primitive2d::VisitorParameters aVisitorParameters(aNewViewInformation2D);
+    auto pProcessor2D = drawinglayer::processor2d::createPixelProcessor2DFromOutputDevice(
+        rRenderContext, aVisitorParameters);
 
     pProcessor2D->process(maArray.CreateB2DPrimitiveArray());
     pProcessor2D.reset();

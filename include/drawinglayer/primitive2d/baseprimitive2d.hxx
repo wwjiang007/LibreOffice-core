@@ -29,14 +29,37 @@
 #include <cppuhelper/basemutex.hxx>
 #include <basegfx/range/b2drange.hxx>
 #include <com/sun/star/graphic/XPrimitive2D.hpp>
-
-namespace drawinglayer::geometry
-{
-class ViewInformation2D;
-}
+#include <drawinglayer/geometry/viewinformation2d.hxx>
 
 namespace drawinglayer::primitive2d
 {
+/** VisitorParameters class
+
+    This class holds the parameters that are passed to the getB2DRange
+    and get2DDecomposition methods of the BasePrimitive2D class.
+    The reason why the parameters aren't passed as input parameters is
+    because of the enourmous number of subclasses of the BasePrimitive2D,
+    it is easier to extend the this class with new parameters, than it
+    is by adding a new input parameter to the methods.
+ */
+class DRAWINGLAYERCORE_DLLPUBLIC VisitorParameters
+{
+private:
+    geometry::ViewInformation2D maViewInformation;
+
+public:
+    explicit VisitorParameters() {}
+
+    explicit VisitorParameters(const geometry::ViewInformation2D& rViewInformation)
+        : maViewInformation(rViewInformation)
+    {
+    }
+
+    const geometry::ViewInformation2D& getViewInformation() const { return maViewInformation; }
+
+    void resetViewInformation() { maViewInformation = geometry::ViewInformation2D(); }
+};
+
 typedef cppu::WeakComponentImplHelper<css::graphic::XPrimitive2D, css::util::XAccounting>
     BasePrimitive2DImplBase;
 
@@ -133,8 +156,7 @@ public:
     bool operator!=(const BasePrimitive2D& rPrimitive) const { return !operator==(rPrimitive); }
 
     /// The default implementation will use getDecomposition results to create the range
-    virtual basegfx::B2DRange
-    getB2DRange(const geometry::ViewInformation2D& rViewInformation) const;
+    virtual basegfx::B2DRange getB2DRange(VisitorParameters const& rParameters) const;
 
     /** provide unique ID for fast identifying of known primitive implementations in renderers. These use
         the defines from drawinglayer_primitivetypes2d.hxx to define unique IDs.
@@ -143,7 +165,7 @@ public:
 
     /// The default implementation will return an empty sequence
     virtual void get2DDecomposition(Primitive2DDecompositionVisitor& rVisitor,
-                                    const geometry::ViewInformation2D& rViewInformation) const;
+                                    VisitorParameters const& rParameters) const;
 
     // Methods from XPrimitive2D
 

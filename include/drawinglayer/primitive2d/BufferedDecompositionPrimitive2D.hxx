@@ -82,9 +82,8 @@ protected:
     }
 
     /** method which is to be used to implement the local decomposition of a 2D primitive. */
-    virtual void
-    create2DDecomposition(Primitive2DContainer& rContainer,
-                          const geometry::ViewInformation2D& rViewInformation) const = 0;
+    virtual void create2DDecomposition(Primitive2DContainer& rContainer,
+                                       VisitorParameters const& rParameters) const = 0;
 
 public:
     // constructor/destructor
@@ -96,9 +95,8 @@ public:
         overridden and the ViewInformation2D for the last decomposition need to be remembered, too, and
         be used in the next call to decide if the buffered decomposition may be reused or not.
      */
-    virtual void
-    get2DDecomposition(Primitive2DDecompositionVisitor& rVisitor,
-                       const geometry::ViewInformation2D& rViewInformation) const override;
+    virtual void get2DDecomposition(Primitive2DDecompositionVisitor& rVisitor,
+                                    VisitorParameters const& rParameters) const override;
 };
 
 } // end of namespace drawinglayer::primitive2d

@@ -39,7 +39,7 @@ private:
     /// local decomposition.
     virtual void
     create2DDecomposition(Primitive2DContainer& rContainer,
-                          const geometry::ViewInformation2D& rViewInformation) const override;
+                          VisitorParameters const& rParameters) const override;
 
 public:
     /// constructor
@@ -62,7 +62,7 @@ public:
 
     /// get range
     virtual basegfx::B2DRange
-    getB2DRange(const geometry::ViewInformation2D& rViewInformation) const override;
+    getB2DRange(VisitorParameters const& rParameters) const override;
 
     /// provide unique ID
     virtual sal_uInt32 getPrimitive2DID() const override;

@@ -85,10 +85,12 @@ public:
         metafile.SetPrefSize(Size(14548, 3350));
         ScopedVclPtrInstance<VirtualDevice> metadevice;
         metafile.Record(metadevice);
-        drawinglayer::geometry::ViewInformation2D view;
-        std::unique_ptr<processor2d::BaseProcessor2D> processor(
-            processor2d::createBaseProcessor2DFromOutputDevice(*metadevice, view));
+
+        drawinglayer::primitive2d::VisitorParameters aParameters;
+        auto processor
+            = processor2d::createBaseProcessor2DFromOutputDevice(*metadevice, aParameters);
         CPPUNIT_ASSERT(processor);
+
         // Match the values Impress uses.
         basegfx::B2DPolygon polygon = { { 15601, 0 }, { 15602, 5832 } };
         attribute::LineAttribute lineAttributes(

@@ -30,8 +30,8 @@ namespace drawinglayer::processor2d
         {
         }
 
-        BaseProcessor2D::BaseProcessor2D(const geometry::ViewInformation2D& rViewInformation)
-        :   maViewInformation2D(rViewInformation)
+        BaseProcessor2D::BaseProcessor2D(primitive2d::VisitorParameters const & rVisitorParameters)
+        :   maVisitorParameters(rVisitorParameters)
         {
         }
 
@@ -42,7 +42,7 @@ namespace drawinglayer::processor2d
         void BaseProcessor2D::process(const primitive2d::BasePrimitive2D& rCandidate)
         {
             // use the visitor API to avoid the cost of constructing Primitive2DContainers
-            rCandidate.get2DDecomposition(*this, getViewInformation2D());
+            rCandidate.get2DDecomposition(*this, maVisitorParameters);
         }
 
         // Primitive2DDecompositionVisitor

@@ -55,9 +55,8 @@ private:
     basegfx::B2DHomMatrix maLastInverseObjectToViewTransformation;
 
     /// local decomposition.
-    virtual void
-    create2DDecomposition(Primitive2DContainer& rContainer,
-                          const geometry::ViewInformation2D& rViewInformation) const override;
+    virtual void create2DDecomposition(Primitive2DContainer& rContainer,
+                                       VisitorParameters const& rParameters) const override;
 
 public:
     /// constructor
@@ -74,13 +73,11 @@ public:
     virtual bool operator==(const BasePrimitive2D& rPrimitive) const override;
 
     /// get range
-    virtual basegfx::B2DRange
-    getB2DRange(const geometry::ViewInformation2D& rViewInformation) const override;
+    virtual basegfx::B2DRange getB2DRange(VisitorParameters const& rParameters) const override;
 
     /// Override standard getDecomposition to be view-dependent here
-    virtual void
-    get2DDecomposition(Primitive2DDecompositionVisitor& rVisitor,
-                       const geometry::ViewInformation2D& rViewInformation) const override;
+    virtual void get2DDecomposition(Primitive2DDecompositionVisitor& rVisitor,
+                                    VisitorParameters const& rParameters) const override;
 
     /// provide unique ID
     virtual sal_uInt32 getPrimitive2DID() const override;

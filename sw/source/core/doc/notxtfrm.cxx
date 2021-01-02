@@ -903,9 +903,10 @@ static bool paintUsingPrimitivesHelper(
                 0.0);
 
             // get a primitive processor for rendering
+            const drawinglayer::primitive2d::VisitorParameters aVisitorParameters(aViewInformation2D);
             std::unique_ptr<drawinglayer::processor2d::BaseProcessor2D> pProcessor2D(
                 drawinglayer::processor2d::createProcessor2DFromOutputDevice(
-                                                rOutputDevice, aViewInformation2D) );
+                                                rOutputDevice, aVisitorParameters));
 
             // render and cleanup
             pProcessor2D->process(rSequence);

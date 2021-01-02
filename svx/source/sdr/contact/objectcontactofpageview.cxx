@@ -227,9 +227,10 @@ namespace sdr::contact
             pOutDev->SetLayoutMode(ComplexTextLayoutFlags::Default); // reset, default is no BiDi/RTL
 
             // create renderer
+            const drawinglayer::primitive2d::VisitorParameters aVisitorParameters(getViewInformation2D());
             std::unique_ptr<drawinglayer::processor2d::BaseProcessor2D> pProcessor2D(
                 drawinglayer::processor2d::createProcessor2DFromOutputDevice(
-                    rTargetOutDev, getViewInformation2D()));
+                    rTargetOutDev, aVisitorParameters));
 
 #if HAVE_FEATURE_DESKTOP || defined( ANDROID )
             // get whole Primitive2DContainer; this will already make use of updated ViewInformation2D

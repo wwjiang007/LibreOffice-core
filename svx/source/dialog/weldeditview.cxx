@@ -238,9 +238,10 @@ void WeldEditView::DoPaint(vcl::RenderContext& rRenderContext, const tools::Rect
             basegfx::B2DHomMatrix(), rRenderContext.GetViewTransformation(),
             vcl::unotools::b2DRectangleFromRectangle(rRect), nullptr, 0.0);
 
-        std::unique_ptr<drawinglayer::processor2d::BaseProcessor2D> xProcessor(
-            drawinglayer::processor2d::createProcessor2DFromOutputDevice(rRenderContext,
-                                                                         aViewInformation2D));
+        const drawinglayer::primitive2d::VisitorParameters aVisitorParameters(aViewInformation2D);
+
+        auto xProcessor = drawinglayer::processor2d::createProcessor2DFromOutputDevice(
+            rRenderContext, aVisitorParameters);
 
         xProcessor->process(aCursorOverlay.getOverlayObjectPrimitive2DSequence());
     }

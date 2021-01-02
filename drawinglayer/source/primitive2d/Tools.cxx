@@ -28,9 +28,8 @@ using namespace css;
 namespace drawinglayer::primitive2d
 {
 // get B2DRange from a given Primitive2DReference
-basegfx::B2DRange
-getB2DRangeFromPrimitive2DReference(const Primitive2DReference& rCandidate,
-                                    const geometry::ViewInformation2D& aViewInformation)
+basegfx::B2DRange getB2DRangeFromPrimitive2DReference(const Primitive2DReference& rCandidate,
+                                                      VisitorParameters const& rParameters)
 {
     basegfx::B2DRange aRetval;
 
@@ -38,7 +37,7 @@ getB2DRangeFromPrimitive2DReference(const Primitive2DReference& rCandidate,
     {
         // get C++ implementation base
         const BasePrimitive2D* pCandidate(static_cast<BasePrimitive2D*>(rCandidate.get()));
-        aRetval.expand(pCandidate->getB2DRange(aViewInformation));
+        aRetval.expand(pCandidate->getB2DRange(rParameters));
     }
 
     return aRetval;
