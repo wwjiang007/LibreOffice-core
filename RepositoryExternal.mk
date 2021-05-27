@@ -561,7 +561,6 @@ endef
 gb_ExternalProject__use_hunspell :=
 
 else # !SYSTEM_HUNSPELL
-ifneq ($(ENABLE_WASM_STRIP_HUNSPELL),TRUE)
 
 define gb_LinkTarget__use_hunspell
 $(call gb_LinkTarget_add_defs,$(1),\
@@ -589,7 +588,6 @@ $(call gb_ExternalProject_use_external_project,$(1),hunspell)
 
 endef
 
-endif # ENABLE_WASM_STRIP_HUNSPELL
 endif # SYSTEM_HUNSPELL
 
 
@@ -3101,7 +3099,7 @@ $(call gb_LinkTarget_add_libs,$(1),\
 	$(call gb_UnpackedTarball_get_dir,postgresql)/src/interfaces/libpq/libpq$(gb_StaticLibrary_PLAINEXT) \
 	$(call gb_UnpackedTarball_get_dir,postgresql)/src/common/libpgcommon$(gb_StaticLibrary_PLAINEXT) \
 	$(call gb_UnpackedTarball_get_dir,postgresql)/src/port/libpgport$(gb_StaticLibrary_PLAINEXT) \
-    $(if $(WITH_GSSAPI),$(GSSAPI_LIBS)) \
+    $(if $(and $(DISABLE_DYNLOADING),$(WITH_GSSAPI)),$(GSSAPI_LIBS)) \
 )
 
 endif # !WNT

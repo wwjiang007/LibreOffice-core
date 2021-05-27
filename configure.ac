@@ -1111,8 +1111,9 @@ emscripten)
     test_split_debug=yes
     test_system_freetype=no
     enable_compiler_plugins=no
-    enable_split_debug=yes
     enable_qt5=yes
+    enable_services_rdb_from_build=yes
+    enable_split_debug=yes
     enable_wasm_strip=yes
     with_system_zlib=no
     with_theme="breeze"
@@ -2966,10 +2967,12 @@ dnl "desktop" one but a "mobile" one, we are always cross-compiling.
 dnl Note the direction of the implication; there is no assumption that
 dnl cross-compiling would imply a non-desktop OS.
 
-if test $_os != iOS -a $_os != Android -a $_os != Emscripten -a "$enable_fuzzers" != "yes"; then
+if test $_os != iOS -a $_os != Android -a "$enable_fuzzers" != "yes"; then
     BUILD_TYPE="$BUILD_TYPE DESKTOP"
     AC_DEFINE(HAVE_FEATURE_DESKTOP)
-    AC_DEFINE(HAVE_FEATURE_MULTIUSER_ENVIRONMENT)
+    if test "$_os" != Emscripten; then
+        AC_DEFINE(HAVE_FEATURE_MULTIUSER_ENVIRONMENT)
+    fi
 fi
 
 # explicitly doesn't include enable_gtk3=no and enable_qt5=yes, so it should
@@ -5614,6 +5617,9 @@ if test "$cross_compiling" = "yes"; then
     test "$enable_extensions" = yes || sub_conf_opts="$sub_conf_opts --disable-extensions"
     test "$enable_wasm_strip" = "yes" && sub_conf_opts="$sub_conf_opts --enable-wasm-strip"
     test "${with_system_lockfile+set}" = set && sub_conf_opts="$sub_conf_opts --with-system-lockfile=${with_system_lockfile}"
+    if test "$_os" = "Emscripten"; then
+        sub_conf_opts="$sub_conf_opts --without-system-libxml --without-system-fontconfig --without-system-freetype --without-system-zlib"
+    fi
 
     # Don't bother having configure look for stuff not needed for the build platform anyway
     sub_conf_defaults=" \
@@ -14857,5 +14863,8 @@ if test -s "$WARNINGS_FILE"; then
     echo "HOST config ($WARNINGS_FILE)"
     cat "$WARNINGS_FILE"
 fi
+
+# Remove unneeded emconfigure artifacts
+rm -f a.out a.wasm a.out.js a.out.wasm
 
 dnl vim:set shiftwidth=4 softtabstop=4 expandtab:

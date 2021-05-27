@@ -2087,6 +2087,7 @@ endef
 define gb_LinkTarget_use_package
 $(call gb_LinkTarget_get_headers_target,$(1)) :| \
 	$(call gb_Package_get_target,$(strip $(2)))
+$(call gb_Package_get_target,$(strip $(2))): RDEPENDS += $(call gb_LinkTarget__get_workdir_linktargetname,$(1))
 
 endef
 

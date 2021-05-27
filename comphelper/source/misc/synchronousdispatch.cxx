@@ -25,7 +25,7 @@
 
 #include <comphelper/synchronousdispatch.hxx>
 #include <comphelper/processfactory.hxx>
-#include <sal/log.hxx>
+#include <tools/diagnose_ex.h>
 
 namespace comphelper
 {
@@ -65,7 +65,8 @@ uno::Reference< lang::XComponent > SynchronousDispatch::dispatch(
         }
         catch ( uno::Exception& )
         {
-            SAL_WARN("comphelper","SynchronousDispatch::dispatch() Error while dispatching!");
+            TOOLS_WARN_EXCEPTION("comphelper", "SynchronousDispatch::dispatch() Error while dispatching '"
+                                 << sURL << "' for '" << sTarget << "'");
         }
     }
 

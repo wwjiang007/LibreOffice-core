@@ -2721,7 +2721,7 @@ bool SvpSalGraphics::supportsOperation(OutDevSupportType eType) const
 
 void dl_cairo_surface_set_device_scale(cairo_surface_t *surface, double x_scale, double y_scale)
 {
-#ifdef ANDROID
+#ifdef DISABLE_DYNLOADING
     cairo_surface_set_device_scale(surface, x_scale, y_scale);
 #else
     static auto func = reinterpret_cast<void(*)(cairo_surface_t*, double, double)>(
@@ -2733,7 +2733,7 @@ void dl_cairo_surface_set_device_scale(cairo_surface_t *surface, double x_scale,
 
 void dl_cairo_surface_get_device_scale(cairo_surface_t *surface, double* x_scale, double* y_scale)
 {
-#ifdef ANDROID
+#ifdef DISABLE_DYNLOADING
     cairo_surface_get_device_scale(surface, x_scale, y_scale);
 #else
     static auto func = reinterpret_cast<void(*)(cairo_surface_t*, double*, double*)>(

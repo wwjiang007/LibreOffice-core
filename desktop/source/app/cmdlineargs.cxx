@@ -18,6 +18,7 @@
  */
 
 #include <config_features.h>
+#include <config_wasm_strip.h>
 
 #if HAVE_FEATURE_MACOSX_SANDBOX
 #include <premac.h>
@@ -288,11 +289,6 @@ void CommandLineArgs::ParseCommandLine_Impl( Supplier& supplier )
     // start with writer only
     m_writer = true;
     m_bDocumentArgs = true;
-
-    m_bEmpty = false;
-
-    // return to avoid #elif
-    return;
 #endif
 
     m_cwdUrl = supplier.getCwdUrl();
@@ -667,6 +663,9 @@ void CommandLineArgs::ParseCommandLine_Impl( Supplier& supplier )
                 case CommandLineEvent::Open:
                     m_openlist.push_back(aArg);
                     m_bDocumentArgs = true;
+#ifdef ENABLE_WASM_STRIP
+                    m_writer = false;
+#endif
                     break;
                 case CommandLineEvent::View:
                     m_viewlist.push_back(aArg);
