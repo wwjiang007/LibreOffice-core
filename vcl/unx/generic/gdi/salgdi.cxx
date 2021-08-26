@@ -692,7 +692,7 @@ bool X11SalGraphics::drawPolyPolygon(
 #if ENABLE_CAIRO_CANVAS
 void X11SalGraphics::clipRegion(cairo_t* cr)
 {
-    SvpSalGraphics::clipRegion(cr, maClipRegion);
+    CairoCommon::clipRegion(cr, maClipRegion);
 }
 #endif // ENABLE_CAIRO_CANVAS
 
@@ -729,7 +729,7 @@ bool X11SalGraphics::drawPolyLine(
         // Use the now available static drawPolyLine from the Cairo-Headless-Fallback
         // that will take care of all needed stuff
         const bool bRetval(
-            SvpSalGraphics::drawPolyLine(
+            CairoCommon::drawPolyLine(
                 cr,
                 nullptr,
                 mnPenColor,
