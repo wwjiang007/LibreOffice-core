@@ -195,6 +195,8 @@ void QtFrame::FillSystemEnvData(SystemEnvData& rData, sal_IntPtr pWindow, QWidge
         rData.platform = SystemEnvData::Platform::Wayland;
     else if (QGuiApplication::platformName() == "xcb")
         rData.platform = SystemEnvData::Platform::Xcb;
+    else if (QGuiApplication::platformName() == "wasm")
+        rData.platform = SystemEnvData::Platform::WASM;
     else
     {
         // maybe add a SystemEnvData::Platform::Unsupported to avoid special cases and not abort?
