@@ -123,6 +123,7 @@ SfxApplication* SfxApplication::GetOrCreate()
         ::framework::SetIsDockingWindowVisible( IsDockingWindowVisible );
 #if HAVE_FEATURE_XMLHELP
         Application::SetHelp( pSfxHelp );
+#endif
         bool bHelpTip = officecfg::Office::Common::Help::Tip::get();
         bool bExtendedHelpTip = officecfg::Office::Common::Help::ExtendedTip::get();
         if (!utl::ConfigManager::IsFuzzing() && bHelpTip)
@@ -133,7 +134,6 @@ SfxApplication* SfxApplication::GetOrCreate()
             Help::EnableBalloonHelp();
         else
             Help::DisableBalloonHelp();
-#endif
     }
     return g_pSfxApplication;
 }
