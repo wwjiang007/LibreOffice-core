@@ -87,11 +87,14 @@ OUString SalGenericInstance::getOSVersion()
         if ( c == ' ' || c == '-' || ( c == '.' && nDots++ > 0 ) )
             break;
     }
-    return OUString::createFromAscii( stName.sysname ) + " " +
+    aKernelVer = OUString::createFromAscii( stName.sysname ) + " " +
         aKernelVer.copy( 0, nIndex );
-#else
-    return aKernelVer;
+#elif defined(EMSCRIPTEN)
+#define str(s) #s
+#define xstr(s) str(s)
+    aKernelVer = "Emscripten " xstr(__EMSCRIPTEN_major__) "." xstr(__EMSCRIPTEN_minor__) "." xstr(__EMSCRIPTEN_tiny__);
 #endif
+    return aKernelVer;
 }
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */
