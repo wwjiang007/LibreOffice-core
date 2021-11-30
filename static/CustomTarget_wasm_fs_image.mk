@@ -1107,6 +1107,45 @@ gb_wasm_image_filelist := \
     $(INSTROOT)/$(LIBO_SHARE_FOLDER)/config/wizard/form/styles/red.css \
     $(INSTROOT)/$(LIBO_SHARE_FOLDER)/config/wizard/form/styles/violet.css \
     $(INSTROOT)/$(LIBO_SHARE_FOLDER)/config/wizard/form/styles/water.css \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/fontconfig/conf.d/05-reset-dirs-sample.conf \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/fontconfig/conf.d/09-autohint-if-no-hinting.conf \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/fontconfig/conf.d/10-autohint.conf \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/fontconfig/conf.d/10-hinting-full.conf \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/fontconfig/conf.d/10-hinting-medium.conf \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/fontconfig/conf.d/10-hinting-none.conf \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/fontconfig/conf.d/10-hinting-slight.conf \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/fontconfig/conf.d/10-no-sub-pixel.conf \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/fontconfig/conf.d/10-scale-bitmap-fonts.conf \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/fontconfig/conf.d/10-sub-pixel-bgr.conf \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/fontconfig/conf.d/10-sub-pixel-rgb.conf \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/fontconfig/conf.d/10-sub-pixel-vbgr.conf \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/fontconfig/conf.d/10-sub-pixel-vrgb.conf \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/fontconfig/conf.d/10-unhinted.conf \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/fontconfig/conf.d/11-lcdfilter-default.conf \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/fontconfig/conf.d/11-lcdfilter-legacy.conf \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/fontconfig/conf.d/11-lcdfilter-light.conf \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/fontconfig/conf.d/20-unhint-small-vera.conf \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/fontconfig/conf.d/25-unhint-nonlatin.conf \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/fontconfig/conf.d/30-metric-aliases.conf \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/fontconfig/conf.d/35-lang-normalize.conf \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/fontconfig/conf.d/40-nonlatin.conf \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/fontconfig/conf.d/45-generic.conf \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/fontconfig/conf.d/45-latin.conf \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/fontconfig/conf.d/49-sansserif.conf \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/fontconfig/conf.d/50-user.conf \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/fontconfig/conf.d/51-local.conf \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/fontconfig/conf.d/60-generic.conf \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/fontconfig/conf.d/60-latin.conf \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/fontconfig/conf.d/65-fonts-persian.conf \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/fontconfig/conf.d/65-khmer.conf \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/fontconfig/conf.d/65-nonlatin.conf \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/fontconfig/conf.d/69-unifont.conf \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/fontconfig/conf.d/70-no-bitmaps.conf \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/fontconfig/conf.d/70-yes-bitmaps.conf \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/fontconfig/conf.d/80-delicious.conf \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/fontconfig/conf.d/90-synthetic.conf \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/fontconfig/fonts.conf \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/fonts/truetype/fc_local.conf \
     $(INSTROOT)/$(LIBO_SHARE_FOLDER)/registry/cjk.xcd \
     $(INSTROOT)/$(LIBO_SHARE_FOLDER)/registry/ctlseqcheck.xcd \
     $(INSTROOT)/$(LIBO_SHARE_FOLDER)/registry/ctl.xcd \
