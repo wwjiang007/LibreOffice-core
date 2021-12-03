@@ -1112,6 +1112,7 @@ emscripten)
     test_system_freetype=no
     enable_compiler_plugins=no
     enable_qt5=yes
+    enable_scripting=no
     enable_services_rdb_from_build=yes
     enable_split_debug=yes
     enable_wasm_strip=yes
