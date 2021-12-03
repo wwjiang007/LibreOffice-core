@@ -9,7 +9,11 @@
 
 $(eval $(call gb_Library_Library,xsec_xmlsec))
 
+ifeq ($(ENABLE_WASM_STRIP),TRUE)
+$(eval $(call gb_Library_set_componentfile,xsec_xmlsec,xmlsecurity/util/xsec_xmlsec_wasm))
+else
 $(eval $(call gb_Library_set_componentfile,xsec_xmlsec,xmlsecurity/util/xsec_xmlsec))
+endif
 
 $(eval $(call gb_Library_set_include,xsec_xmlsec,\
 	$$(INCLUDE) \
