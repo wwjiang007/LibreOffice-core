@@ -107,6 +107,7 @@ define gb_LinkTarget__WantLock
 $(if $(strip $(and \
     $(call gb_CondBuildLockfile,$(true)), \
     $(filter-out Executable/lockfile,$(1)), \
+    $(CROSS_COMPILING), \
     $(DISABLE_DYNLOADING), \
     $(filter CppunitTest Executable,$(TARGETTYPE)) \
     )),$(true))
