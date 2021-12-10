@@ -3038,7 +3038,7 @@ ENABLE_SERVICES_RDB_FROM_BUILD=
 if test "$enable_services_rdb_from_build" = yes; then
     ENABLE_SERVICES_RDB_FROM_BUILD=TRUE
     if test -n "$with_locales" -a "$with_locales" != en -a "$with_locales" != ALL; then
-        AC_MSG_ERROR([Currently just --with-locales=all or en is supported with --enable-services-rdb-from-build])
+        AC_MSG_ERROR([Currently just --with-locales=ALL or en is supported with --enable-services-rdb-from-build])
     fi
 fi
 AC_SUBST(ENABLE_SERVICES_RDB_FROM_BUILD)

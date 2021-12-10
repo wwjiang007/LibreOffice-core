@@ -149,10 +149,10 @@ QtFrame::QtFrame(QtFrame* pParent, SalFrameStyleFlags nStyle, bool bUseCairo)
         else if (nStyle & SalFrameStyleFlags::TOOLTIP)
             aWinFlags = Qt::ToolTip;
         // Can't use Qt::Popup, because it grabs the input focus and generates
-        // a focus-out event, reaching the combo box. This used to map to
-        // Qt::ToolTip, which doesn't feel that correct...
+        // a focus-out event, reaching the combo box. So we could also use
+        // aWinFlags = Qt::Window | Qt::FramelessWindowHint | Qt::BypassWindowManagerHint;
         else if (isPopup())
-            aWinFlags = Qt::Window | Qt::FramelessWindowHint | Qt::BypassWindowManagerHint;
+            aWinFlags = Qt::ToolTip | Qt::FramelessWindowHint;
         else if (nStyle & SalFrameStyleFlags::TOOLWINDOW)
             aWinFlags = Qt::Tool;
         // top level windows can't be transient in Qt, so make them dialogs, if they have a parent. At least
@@ -176,8 +176,8 @@ QtFrame::QtFrame(QtFrame* pParent, SalFrameStyleFlags nStyle, bool bUseCairo)
 
     if (pParent && !(pParent->m_nStyle & SalFrameStyleFlags::PLUG))
     {
-        QWindow* pParentWindow = pParent->GetQWidget()->window()->windowHandle();
-        QWindow* pChildWindow = asChild()->window()->windowHandle();
+        QWindow* pParentWindow = pParent->windowHandle();
+        QWindow* pChildWindow = windowHandle();
         if (pParentWindow && pChildWindow && (pParentWindow != pChildWindow))
             pChildWindow->setTransientParent(pParentWindow);
     }
@@ -351,7 +351,11 @@ QWindow* QtFrame::windowHandle() const
 {
     // set attribute 'Qt::WA_NativeWindow' first to make sure a window handle actually exists
     QWidget* pChild = asChild();
+    assert(pChild->window() == pChild);
+#ifndef EMSCRIPTEN
+    // no idea, why this breaks the menubar for EMSCRIPTEN
     pChild->setAttribute(Qt::WA_NativeWindow);
+#endif
     return pChild->windowHandle();
 }
 
@@ -430,21 +434,27 @@ void QtFrame::modalReparent(bool bVisible)
 
     if (!bVisible)
     {
-        m_pQWidget->setParent(m_pParent ? m_pParent->asChild() : nullptr,
-                              m_pQWidget->windowFlags());
+        QWidget* pNewParent = m_pParent ? m_pParent->asChild() : nullptr;
+        if (pNewParent != m_pQWidget->parent())
+            m_pQWidget->setParent(pNewParent, m_pQWidget->windowFlags());
         return;
     }
 
     if (!QGuiApplication::modalWindow())
         return;
 
+    if (m_pParent->windowHandle() == QGuiApplication::modalWindow())
+        return;
+
     QtInstance* pInst = static_cast<QtInstance*>(GetSalData()->m_pInstance);
     for (auto* pFrame : pInst->getFrames())
     {
-        QWidget* pQWidget = static_cast<QtFrame*>(pFrame)->asChild();
-        if (pQWidget->windowHandle() == QGuiApplication::modalWindow())
+        QtFrame* pQtFrame = static_cast<QtFrame*>(pFrame);
+        if (pQtFrame->windowHandle() == QGuiApplication::modalWindow())
         {
-            m_pQWidget->setParent(pQWidget, m_pQWidget->windowFlags());
+            QWidget* pNewParent = pQtFrame->asChild();
+            if (pNewParent != m_pQWidget->parent())
+                m_pQWidget->setParent(pNewParent, m_pQWidget->windowFlags());
             break;
         }
     }
@@ -462,7 +472,7 @@ void QtFrame::Show(bool bVisible, bool bNoActivate)
     if (!bVisible) // hide
     {
         pSalInst->RunInMainThread([this]() {
-            asChild()->hide();
+            asChild()->setVisible(false);
             if (m_pQWidget->isModal())
                 modalReparent(false);
         });
@@ -477,9 +487,9 @@ void QtFrame::Show(bool bVisible, bool bNoActivate)
         QWidget* const pChild = asChild();
         if (m_pQWidget->isModal())
             modalReparent(true);
-        pChild->show();
+        pChild->setVisible(true);
         pChild->raise();
-        if (!bNoActivate && !isPopup())
+        if (!bNoActivate)
         {
             pChild->activateWindow();
             pChild->setFocus();

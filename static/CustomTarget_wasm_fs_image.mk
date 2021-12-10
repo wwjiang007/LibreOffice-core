@@ -1146,6 +1146,23 @@ gb_wasm_image_filelist := \
     $(INSTROOT)/$(LIBO_SHARE_FOLDER)/fontconfig/conf.d/90-synthetic.conf \
     $(INSTROOT)/$(LIBO_SHARE_FOLDER)/fontconfig/fonts.conf \
     $(INSTROOT)/$(LIBO_SHARE_FOLDER)/fonts/truetype/fc_local.conf \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/gallery/fontwork.sdg \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/gallery/fontwork.sdv \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/gallery/fontwork.thm \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/liblangtag/common/bcp47/calendar.xml \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/liblangtag/common/bcp47/collation.xml \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/liblangtag/common/bcp47/currency.xml \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/liblangtag/common/bcp47/number.xml \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/liblangtag/common/bcp47/timezone.xml \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/liblangtag/common/bcp47/transform_ime.xml \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/liblangtag/common/bcp47/transform_keyboard.xml \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/liblangtag/common/bcp47/transform_mt.xml \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/liblangtag/common/bcp47/transform_private_use.xml \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/liblangtag/common/bcp47/transform.xml \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/liblangtag/common/bcp47/variant.xml \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/liblangtag/common/supplemental/likelySubtags.xml \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/liblangtag/common/supplemental/supplementalMetadata.xml \
+    $(INSTROOT)/$(LIBO_SHARE_FOLDER)/liblangtag/language-subtag-registry.xml \
     $(INSTROOT)/$(LIBO_SHARE_FOLDER)/registry/cjk.xcd \
     $(INSTROOT)/$(LIBO_SHARE_FOLDER)/registry/ctlseqcheck.xcd \
     $(INSTROOT)/$(LIBO_SHARE_FOLDER)/registry/ctl.xcd \
@@ -1169,6 +1186,7 @@ gb_wasm_image_filelist := \
     $(INSTROOT)/$(LIBO_SHARE_RESOURCE_FOLDER)/common/fonts/opens___.ttf \
     $(INSTROOT)/$(LIBO_URE_ETC_FOLDER)/$(call gb_Helper_get_rcfile,uno) \
     $(INSTROOT)/$(LIBO_URE_MISC_FOLDER)/services.rdb \
+    $(SRCDIR)/android/default-document/example3.odt \
     $(SRCDIR)/android/default-document/example.odt \
 
 ifneq ($(filter MORE_FONTS,$(BUILD_TYPE)),)
@@ -1413,7 +1431,7 @@ gb_wasm_image_filelist += \
     $(INSTROOT)/$(LIBO_SHARE_FOLDER)/config/soffice.cfg/modules/schart/ui/tp_Trendline.ui \
     $(INSTROOT)/$(LIBO_SHARE_FOLDER)/config/soffice.cfg/modules/schart/ui/wizelementspage.ui \
 
-endif
+endif # !ENABLE_WASM_STRIP_CHART
 
 wasm_fs_image_WORKDIR := $(call gb_CustomTarget_get_workdir,static/wasm_fs_image)
 

@@ -40,6 +40,7 @@
 
 #include <QtCore/QAbstractEventDispatcher>
 #include <QtCore/QThread>
+#include <QtGui/QScreen>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QWidget>
 
@@ -247,6 +248,10 @@ QtInstance::QtInstance(std::unique_ptr<QApplication>& pQApp, bool bUseCairo)
 
     connect(QGuiApplication::inputMethod(), &QInputMethod::localeChanged, this,
             &QtInstance::localeChanged);
+
+    for (const QScreen* pCurScreen : QApplication::screens())
+        connect(pCurScreen, &QScreen::virtualGeometryChanged, this,
+                &QtInstance::virtualGeometryChanged);
 
 #ifndef EMSCRIPTEN
     m_bSupportsOpenGL = true;
@@ -600,6 +605,13 @@ void* QtInstance::CreateGStreamerSink(const SystemChildWindow* pWindow)
     Q_UNUSED(pWindow);
     return nullptr;
 #endif
+}
+
+void QtInstance::virtualGeometryChanged(const QRect&)
+{
+    SalFrame* pAnyFrame = anyFrame();
+    if (pAnyFrame)
+        pAnyFrame->CallCallback(SalEvent::DisplayChanged, nullptr);
 }
 
 void QtInstance::AllocFakeCmdlineArgs(std::unique_ptr<char* []>& rFakeArgv,

@@ -29,6 +29,7 @@
 #include <boost/property_tree/json_parser.hpp>
 
 #include <com/sun/star/awt/PopupMenuDirection.hpp>
+#include <com/sun/star/awt/XPopupMenuAsync.hpp>
 #include <com/sun/star/beans/XPropertySet.hpp>
 #include <com/sun/star/frame/XDispatchRecorderSupplier.hpp>
 #include <com/sun/star/frame/XLayoutManager.hpp>
@@ -1697,18 +1698,26 @@ struct SfxDispatcherPopupFinish final
     css::uno::Reference<css::frame::XPopupMenuController> m_xPopupController;
     std::function<void(sal_Int16)> m_aCloseFunc;
     rtl::Reference<::svt::DialogClosedListener> m_xDialogListener;
-    VclPtr<PopupMenu> m_pPopupMenu;
+    css::uno::Reference<css::awt::XPopupMenu> m_xPopupMenu;
 
     DECL_LINK(PopupClosedHdl, css::ui::dialogs::DialogClosedEvent*, void);
 
     SfxDispatcherPopupFinish(css::uno::Reference<css::frame::XPopupMenuController> xPopupController,
-                             const std::function<void(sal_Int16)>& rCloseFunc, PopupMenu& rVCLMenu)
+                             const std::function<void(sal_Int16)>& rCloseFunc,
+                             css::uno::Reference<css::awt::XPopupMenu> xPopupMenu)
         : m_xPopupController(xPopupController)
         , m_aCloseFunc(rCloseFunc)
         , m_xDialogListener(new ::svt::DialogClosedListener())
-        , m_pPopupMenu(&rVCLMenu)
+        , m_xPopupMenu(xPopupMenu)
     {
         m_xDialogListener->SetDialogClosedLink(LINK(this, SfxDispatcherPopupFinish, PopupClosedHdl));
+    }
+
+    void Finish(sal_Int16 nResult)
+    {
+         css::uno::Reference<css::uno::XInterface> xInterface(m_xPopupMenu, css::uno::UNO_QUERY);
+         css::ui::dialogs::DialogClosedEvent aEvt(xInterface, nResult);
+         m_xDialogListener->dialogClosed(aEvt);
     }
 };
 
@@ -1722,8 +1731,11 @@ IMPL_LINK(SfxDispatcherPopupFinish, PopupClosedHdl, css::ui::dialogs::DialogClos
     css::uno::Reference<css::lang::XComponent> xComponent(m_xPopupController, css::uno::UNO_QUERY);
     if (xComponent.is())
         xComponent->dispose();
-    m_pPopupMenu->Finish();
-    m_pPopupMenu.disposeAndClear();
+
+    VCLXMenu* pAwtMenu = comphelper::getFromUnoTunnel<VCLXMenu>(m_xPopupMenu);
+    PopupMenu* pPopupMenu = static_cast< PopupMenu*>(pAwtMenu->GetMenu());
+    pPopupMenu->Finish();
+
     SfxDispatcher_Impl::m_pActivePopupController = nullptr;
     delete this;
 }
@@ -1815,15 +1827,11 @@ void SfxDispatcher::ExecutePopup( const OUString& rResName, vcl::Window* pWin, c
             const sal_Int16 nFlags = css::awt::PopupMenuDirection::EXECUTE_DOWN;
             const css::awt::Rectangle aRect(aPos.X(), aPos.Y(), 1, 1);
             css::uno::Reference<css::awt::XWindowPeer> xParent(aEvent.SourceWindow, css::uno::UNO_QUERY);
-            css::uno::Reference<css::awt::XPopupMenuAsync xAsyncPopup(xPopupMenu, css::uno::UNO_QUERY);
-            pFin = new SfxDispatcherPopupFinish(xPopupController, rCloseFunc, *pVCLMenu);
+            css::uno::Reference<css::awt::XPopupMenuAsync> xAsyncPopup(xPopupMenu, css::uno::UNO_QUERY);
+            pFin = new SfxDispatcherPopupFinish(xPopupController, rCloseFunc, xPopupMenu);
             SfxDispatcher_Impl::m_pActivePopupController = &pFin->m_xPopupController;
-            if (!rCloseFunc || !xAsyncPopup.is() || !xAsyncPopup->popup(pWindow, aRect, nFlags, pFin->m_xDialogListener))
-            {
-                css::uno::Reference<css::uno::XInterface> xInterface(*pAwtMenu, css::uno::UNO_QUERY);
-                css::ui::dialogs::DialogClosedEvent aEvt(xInterface, xPopupMenu->execute(xParent, aRect, nFlags));
-                pFin->m_xDialogListener->dialogClosed(aEvt);
-            }
+            if (!rCloseFunc || !xAsyncPopup.is() || !xAsyncPopup->popup(xParent, aRect, nFlags, pFin->m_xDialogListener))
+                pFin->Finish(xPopupMenu->execute(xParent, aRect, nFlags));
         }
     }
 

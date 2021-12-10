@@ -2973,13 +2973,6 @@ void SbRtl_CompatibilityMode(StarBASIC *, SbxArray & rPar, bool)
     rPar.Get(0)->PutBool(bEnabled);
 }
 
-bool LibreOffice6FloatingPointMode()
-{
-    static bool bMode = std::getenv("LIBREOFFICE6FLOATINGPOINTMODE") != nullptr;
-
-    return bMode || officecfg::Office::Scripting::Basic::Compatibility::UseLibreOffice6FloatingPointConversion::get();
-}
-
 void SbRtl_Input(StarBASIC *, SbxArray & rPar, bool)
 {
     // 2 parameters needed
@@ -3030,7 +3023,14 @@ void SbRtl_Me(StarBASIC *, SbxArray & rPar, bool)
         refVar->PutObject( pClassModuleObject );
 }
 
-#endif
+#endif // HAVE_FEATURE_SCRIPTING
+
+bool LibreOffice6FloatingPointMode()
+{
+    static bool bMode = std::getenv("LIBREOFFICE6FLOATINGPOINTMODE") != nullptr;
+
+    return bMode || officecfg::Office::Scripting::Basic::Compatibility::UseLibreOffice6FloatingPointConversion::get();
+}
 
 sal_Int16 implGetWeekDay( double aDate, bool bFirstDayParam, sal_Int16 nFirstDay )
 {

@@ -1514,8 +1514,8 @@ AbstractDialogFactory_Impl::CreateTipOfTheDayDialog(weld::Window* pParent)
 VclPtr<VclAbstractDialog>
 AbstractDialogFactory_Impl::CreateToolbarmodeDialog(weld::Window* pParent)
 {
-    return VclPtr<CuiAbstractController_Impl>::Create(
-        std::make_unique<ToolbarmodeDialog>(pParent));
+    return VclPtr<CuiAbstractControllerAsync_Impl>::Create(
+        std::make_shared<ToolbarmodeDialog>(pParent));
 }
 
 VclPtr<AbstractDiagramDialog>

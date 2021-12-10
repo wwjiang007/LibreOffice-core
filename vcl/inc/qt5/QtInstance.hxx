@@ -74,6 +74,7 @@ private Q_SLOTS:
     bool ImplYield(bool bWait, bool bHandleAllCurrentEvents);
     static void deleteObjectLater(QObject* pObject);
     static void localeChanged();
+    void virtualGeometryChanged(const QRect& rect);
 
 Q_SIGNALS:
     bool ImplYieldSignal(bool bWait, bool bHandleAllCurrentEvents);

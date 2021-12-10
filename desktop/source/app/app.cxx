@@ -2003,7 +2003,6 @@ void Desktop::OpenClients()
         handleCrashReport();
 #endif
 
-#if 0
     if ( ! bAllowRecoveryAndSessionManagement )
     {
         try
@@ -2080,7 +2079,6 @@ void Desktop::OpenClients()
             }
         }
     }
-#endif
 
     // write this information here to avoid depending on vcl in the crash reporter lib
     CrashReporter::addKeyValue("Language", Application::GetSettings().GetLanguageTag().getBcp47(), CrashReporter::Create);
