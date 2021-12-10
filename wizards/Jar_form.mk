@@ -42,6 +42,6 @@ $(eval $(call gb_Jar_add_sourcefiles,form,\
 	wizards/com/sun/star/wizards/form/UIControlArranger \
 ))
 
-$(eval $(call gb_Jar_set_componentfile,form,wizards/com/sun/star/wizards/form/form,OOO,services))
+$(eval $(call gb_Jar_set_componentfile,form,wizards/com/sun/star/wizards/form/form,OOO))
 
 # vim: set noet sw=4 ts=4:

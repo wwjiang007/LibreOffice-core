@@ -10,9 +10,9 @@
 $(eval $(call gb_Library_Library,i18npool))
 
 ifeq ($(WITH_LOCALES),en)
-$(eval $(call gb_Library_set_componentfile,i18npool,i18npool/util/i18npool.en,services))
+$(eval $(call gb_Library_set_componentfile,i18npool,i18npool/util/i18npool.en))
 else
-$(eval $(call gb_Library_set_componentfile,i18npool,i18npool/util/i18npool,services))
+$(eval $(call gb_Library_set_componentfile,i18npool,i18npool/util/i18npool))
 endif
 
 $(eval $(call gb_Library_set_include,i18npool,\
