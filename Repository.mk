@@ -612,7 +612,7 @@ $(eval $(call gb_Helper_register_libraries_for_install,PRIVATELIBS_URE,ure, \
 ))
 
 $(eval $(call gb_Helper_register_plugins_for_install,PRIVATELIBS_URE,ure, \
-    sal_textenc \
+    $(if $(filter ANDROID iOS,$(OS))$(filter FUZZERS,$(BUILD_TYPE)),,sal_textenc) \
 ))
 
 $(eval $(call gb_Helper_register_libraries_for_install,PLAINLIBS_OOO,ooo, \

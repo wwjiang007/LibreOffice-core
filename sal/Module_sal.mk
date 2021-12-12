@@ -14,7 +14,7 @@ $(eval $(call gb_Module_add_targets,sal,\
 	$(if $(filter $(OS),ANDROID), \
 		Library_lo-bootstrap) \
 	Library_sal \
-    $(if $(filter ANDROID iOS,$(OS)),,Library_sal_textenc) \
+    $(if $(filter ANDROID iOS,$(OS))$(filter FUZZERS,$(BUILD_TYPE)),,Library_sal_textenc) \
 ))
 
 ifneq (,$(filter DESKTOP,$(BUILD_TYPE)))

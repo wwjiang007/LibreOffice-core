@@ -130,7 +130,7 @@ $(eval $(call gb_Library_add_cxxflags,sal,\
 ))
 endif
 
-ifneq (,$(filter ANDROID iOS,$(OS)))
+ifneq (,$(filter ANDROID iOS,$(OS))$(filter FUZZERS,$(BUILD_TYPE)))
 $(eval $(call gb_Library_add_exception_objects,sal,\
     sal/textenc/context \
     sal/textenc/convertbig5hkscs \
