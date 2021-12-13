@@ -24,7 +24,7 @@ export ASAN_OPTIONS="detect_leaks=0"
 df -h $OUT $WORK
 
 cd $WORK
-$SRC/libreoffice/autogen.sh --with-distro=LibreOfficeOssFuzz --with-external-tar=$SRC
+$SRC/libreoffice/autogen.sh --with-distro=LibreOfficeOssFuzz --with-external-tar=$SRC/external-tar
 
 make clean
 
@@ -37,8 +37,8 @@ for a in *fuzzer; do
     #some minimal fonts required
     mv $a $OUT
     mkdir -p $OUT/$a.fonts
-    tar -x -C $OUT/$a.fonts --strip-components=1 --wildcards --no-anchored '*.ttf' -f $SRC/liberation-fonts-ttf*
-    cp $SRC/*opens___.ttf $OUT/$a.fonts
+    tar -x -C $OUT/$a.fonts --strip-components=1 --wildcards --no-anchored '*.ttf' -f $SRC/external-tar/liberation-fonts-ttf*
+    cp $SRC/external-tar/*opens___.ttf $OUT/$a.fonts
     #minimal runtime requirements
     cp templateservices.rdb $OUT/$a.services.rdb
     cp types.rdb $OUT/$a.types.rdb
