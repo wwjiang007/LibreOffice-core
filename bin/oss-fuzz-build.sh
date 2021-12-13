@@ -20,7 +20,7 @@ export LDFLAGS="$CFLAGS -Wl,--compress-debug-sections,zlib -lpthread"
 df -h $OUT $WORK
 
 cd $WORK
-$SRC/libreoffice/autogen.sh --with-distro=LibreOfficeOssFuzz --with-external-tar=$SRC
+$SRC/libreoffice/autogen.sh --with-distro=LibreOfficeOssFuzz --with-external-tar=$SRC/tarballs
 
 make clean
 
